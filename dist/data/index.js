@@ -8,7 +8,7 @@ var generateProducts = function () {
             id: idx + 1,
             name: faker_1.faker.commerce.productName(),
             description: faker_1.faker.commerce.productDescription(),
-            price: +faker_1.faker.datatype.number({ min: 10, max: 1000 }),
+            price: faker_1.faker.number.int({ min: 10, max: 1000 }),
         };
     });
 };
