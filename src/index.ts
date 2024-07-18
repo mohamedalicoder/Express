@@ -25,7 +25,7 @@ app.set('views', './views');
 
 
 const fakeData = generateProducts()
-const productServices = new ProductServices()
+const productServices = new ProductServices(fakeData)
 const productController = new ProductController(productServices)
 
 
@@ -34,9 +34,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 // get all product 
-app.get("/all",(req,res)=>{
-  res.send(productController.getAllProducts());
-})
+app.get("/all",(req,res)=>  res.send(productController.getAllProducts(req)))
 
 
 
@@ -66,67 +64,9 @@ app.get("/products/:id",(req,res)=>{
 
 
 // get data by using quary params 
-app.get("/products",(req,res)=>{
-  const filterQuery = req.query.filter as string;
+app.get("/products",(req,res)=>res.send(productController.getAllProducts(req)))
 
-  if(filterQuery){
-    const propertisToFilter = filterQuery.split(",")
-    let filterProduct = [];
-    filterProduct =  fakeData.map(product =>{
-      const filteredProduct: any = {};
 
-       propertisToFilter.forEach(property=>{
-         if(product.hasOwnProperty(property as keyof typeof product)){
-            filteredProduct[property]=product[property as keyof typeof product]
-         }
-       })
-       return { id: product.id, ...filteredProduct };
-    })
-    res.send(filterProduct)
-
-  }else{
-    res.send(fakeData)
-  }
-})
-
-// Define a GET route for /product
-app.get("/product", (req: Request, res: Response) => {
-  // Extract the 'filter' query parameter from the request
-  const filterQuery = req.query.filter as string;
-
-  // Check if there is a filter query
-  if (filterQuery) {
-    // Split the filter query into an array of properties to filter by
-    const propertiesToFilter = filterQuery.split(",");
-
-    // Initialize an array to hold the filtered products
-    let filterProduct = [];
-
-    // Iterate over the fake data to filter the products
-    filterProduct = fakeData.map(product => {
-      // Create an empty object to hold the filtered product properties
-      const filteredProduct: any = {};
-
-      // Iterate over the properties to filter by
-      propertiesToFilter.forEach(property => {
-        // Check if the product has the current property
-        if (product.hasOwnProperty(property as keyof typeof product)) {
-          // Add the property to the filtered product
-          filteredProduct[property] = product[property as keyof typeof product];
-        }
-      });
-
-      // Return the filtered product with its id
-      return { id: product.id, ...filteredProduct };
-    });
-
-    // Send the filtered products as the response
-    res.send(filterProduct);
-  } else {
-    // If no filter query, send all the fake data as the response
-    res.send(fakeData);
-  }
-});
 
 
 app.get("/",(req,res)=>{
