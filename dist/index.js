@@ -17,32 +17,57 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var index_1 = require("./data/index");
 var body_parser_1 = __importDefault(require("body-parser"));
+var Product_1 = require("./Controllers/Product");
+var ProductServices_1 = require("./services/ProductServices");
 var app = (0, express_1.default)();
 app.use(express_1.default.static('public')); // use public folder for static files
 // Set EJS as the templating engine
 app.set('view engine', 'ejs');
 app.set('views', './views');
 var fakeData = (0, index_1.generateProducts)();
+var productServices = new ProductServices_1.ProductServices();
+var productController = new Product_1.ProductController(productServices);
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 // get all product 
 app.get("/all", function (req, res) {
-    res.send(fakeData);
+    res.send(productController.getAllProducts());
 });
 // git product py id 
-app.get('/product/:id', function (req, res) {
-    var productId = parseInt(req.params.id);
-    var products = fakeData.find(function (p) {
-        return p.id === productId;
-    });
-    if (products) {
-        res.send(products);
+app.get("/products/:id", function (req, res) {
+    var productId = +req.params.id;
+    if (isNaN(productId)) {
+        res.status(400).send("Invalid product id");
+    }
+    if (productId) {
+        var product = fakeData.find(function (product) { return product.id == productId; });
+        res.send(product);
     }
     else {
-        res.status(404).send('Product not found');
+        res.status(404).send("product not found");
     }
 });
 // get data by using quary params 
+app.get("/products", function (req, res) {
+    var filterQuery = req.query.filter;
+    if (filterQuery) {
+        var propertisToFilter_1 = filterQuery.split(",");
+        var filterProduct = [];
+        filterProduct = fakeData.map(function (product) {
+            var filteredProduct = {};
+            propertisToFilter_1.forEach(function (property) {
+                if (product.hasOwnProperty(property)) {
+                    filteredProduct[property] = product[property];
+                }
+            });
+            return __assign({ id: product.id }, filteredProduct);
+        });
+        res.send(filterProduct);
+    }
+    else {
+        res.send(fakeData);
+    }
+});
 // Define a GET route for /product
 app.get("/product", function (req, res) {
     // Extract the 'filter' query parameter from the request
@@ -79,25 +104,26 @@ app.get("/product", function (req, res) {
 app.get("/", function (req, res) {
     res.render('index', { products: fakeData });
 });
+// add product 
 app.post("/add-product", function (req, res) {
-    var reqs = req.body;
+    var requstes = req.body;
     var newProduct = {
         id: fakeData.length + 1,
-        name: reqs.productName,
-        description: reqs.description,
-        price: +reqs.productPrice,
+        name: requstes.productName,
+        description: requstes.productDescription,
+        price: +requstes.productPrice,
     };
     fakeData.push(newProduct);
-    res.status(201).send(newProduct);
+    res.redirect('/');
 });
-// update the name 
-app.patch("/update:id", function (req, res) {
+// update product
+app.patch("/update/:id", function (req, res) {
     var productId = +req.params.id;
     if (isNaN(productId)) {
         return res.status(400).send('Invalid product id');
     }
     var reqs = req.body;
-    var productIndex = fakeData.findIndex(function (p) { return p.id === productId; });
+    var productIndex = fakeData.findIndex(function (product) { return product.id == productId; });
     if (productIndex === -1) {
         return res.status(404).send('Product not found');
     }
@@ -105,12 +131,12 @@ app.patch("/update:id", function (req, res) {
     res.send(fakeData[productIndex]);
 });
 // delete product
-app.delete("/delete:id", function (req, res) {
+app.delete("/delete/:id", function (req, res) {
     var productId = +req.params.id;
     if (isNaN(productId)) {
         return res.status(400).send('Invalid product id');
     }
-    var productIndex = fakeData.findIndex(function (p) { return p.id === productId; });
+    var productIndex = fakeData.findIndex(function (product) { return product.id == productId; });
     if (productIndex === -1) {
         return res.status(404).send('Product not found');
     }

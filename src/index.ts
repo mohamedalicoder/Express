@@ -3,6 +3,8 @@ import { Request, Response } from 'express';
 import {  generateProducts } from './data/index';
 import { IProduct } from './interface';
 import bodyParser from 'body-parser';
+import { ProductController } from './Controllers/Product';
+import { ProductServices } from './services/ProductServices';
 
 
 
@@ -23,6 +25,9 @@ app.set('views', './views');
 
 
 const fakeData = generateProducts()
+const productServices = new ProductServices()
+const productController = new ProductController(productServices)
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,7 +35,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // get all product 
 app.get("/all",(req,res)=>{
-  res.send(fakeData);
+  res.send(productController.getAllProducts());
 })
 
 
