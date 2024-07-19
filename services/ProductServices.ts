@@ -1,6 +1,6 @@
 
 import { generateProducts } from "../data";
-import { IAdd, IProduct } from "src/interface";
+import { IAdd, IProduct } from "interface";
 
 const fakeData = generateProducts()
 export class ProductServices{

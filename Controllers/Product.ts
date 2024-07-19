@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { ProductServices } from "src/services/ProductServices";
+import { ProductServices } from "services/ProductServices";
 import { IProduct } from './../interface/index';
 
 export class ProductController{

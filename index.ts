@@ -5,6 +5,7 @@ import { IProduct } from './interface';
 import bodyParser from 'body-parser';
 import { ProductController } from './Controllers/Product';
 import { ProductServices } from './services/ProductServices';
+import path from 'path';
 
 
 
@@ -17,8 +18,9 @@ const app = express();
 app.use(express.static('public'));  // use public folder for static files
 // Set EJS as the templating engine
 
-app.set('view engine', 'ejs');
-app.set('views', './views');
+app.set('view engine', 'pug');
+app.set('views',path.join(__dirname,'views'))
+
 
 
 
@@ -33,6 +35,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
+app.get("/",(req,res)=>{
+  res.render("index")
+})
 // get all product 
 app.get("/all",(req,res)=>  res.send(productController.getAllProducts(req)))
  
