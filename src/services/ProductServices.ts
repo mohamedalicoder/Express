@@ -14,6 +14,8 @@ export class ProductServices{
     findAll():IProduct[]{
         return this.products
     }
+
+    // get data by using quary params 
     filterdByQuary(filterQuery?:string){
        
 
@@ -35,6 +37,26 @@ export class ProductServices{
   }else{
     return this.findAll()
   }
+    }
+
+    // git product py id 
+    findById(productId?:number){
+  if(productId){
+    const product = this.findAll().find(product=> product.id == productId)
+   return product
+  }
+
+    }
+
+    // post new product 
+    addProduct(requstes){
+        const newProduct = {
+            id: fakeData.length+1,
+            name: requstes.productName,
+            description: requstes.productDescription,
+            price: +requstes.productPrice,
+          }
+          this.findAll().push(newProduct)
     }
 
 }

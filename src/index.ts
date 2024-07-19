@@ -38,28 +38,8 @@ app.get("/all",(req,res)=>  res.send(productController.getAllProducts(req)))
 
 
 
-
-
-
 // git product py id 
-app.get("/products/:id",(req,res)=>{
-  const productId = +req.params.id
-
-  if(isNaN(productId)){
-    res.status(400).send("Invalid product id")
-  }
-
-  if(productId){
-    const product = fakeData.find(product=> product.id == productId)
-    res.send(product)
-  }
-  else{
-    res.status(404).send("product not found")
-  }
-
-
-
-})
+app.get("/products/:id",(req,res)=>res.send(productController.getProductById(req,res)))
 
 
 
@@ -69,23 +49,11 @@ app.get("/products",(req,res)=>res.send(productController.getAllProducts(req)))
 
 
 
-app.get("/",(req,res)=>{
- 
-  res.render('index',{products: fakeData});
-})
 
 // add product 
 
 app.post("/add-product",(req,res)=>{
-  const requstes =req.body
-  const newProduct = {
-    id: fakeData.length+1,
-    name: requstes.productName,
-    description: requstes.productDescription,
-    price: +requstes.productPrice,
-  }
-  fakeData.push(newProduct)
-  res.redirect('/')
+  res.send(productController.addNewProduct(req,res))
 })
 
 // update product
