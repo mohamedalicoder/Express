@@ -34,6 +34,9 @@ const productController = new ProductController(productServices)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// static files 
+app.use(express.static('public'));
+
 
 app.get("/",(req,res)=>{
   res.render("index")
