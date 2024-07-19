@@ -4,3 +4,9 @@ export interface IProduct {
     description: string;
     price: number;
 }
+
+export interface IAdd{
+    name: string;
+    description: string;
+    price: number;
+}

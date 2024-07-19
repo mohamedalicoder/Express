@@ -1,6 +1,6 @@
 
 import { generateProducts } from "../data";
-import { IProduct } from "src/interface";
+import { IAdd, IProduct } from "src/interface";
 
 const fakeData = generateProducts()
 export class ProductServices{
@@ -49,14 +49,16 @@ export class ProductServices{
     }
 
     // post new product 
-    addProduct(requstes){
-        const newProduct = {
-            id: fakeData.length+1,
-            name: requstes.productName,
-            description: requstes.productDescription,
-            price: +requstes.productPrice,
-          }
-          this.findAll().push(newProduct)
+    addProduct(productBody:IAdd){
+     
+        return  this.findAll().push({id:this.findAll().length + 1, ...productBody})
+    }
+
+    updateProductByIndex(index:number,productBody:IAdd){
+   return   this.findAll()[index] = {...this.findAll()[index],...productBody}
+    }
+    deleteProductByIndex(index:number,s){
+        this.findAll().splice(index,1)
     }
 
 }

@@ -33,10 +33,46 @@ export class ProductController{
 
     // add product 
     addNewProduct(req:Request , res:Response){
-        const requstes =req.body
-        const newProduct = this.productService.addProduct(requstes);
+        const productBody =req.body
+
+         this.productService.addProduct(productBody);
+        res.status(200).send({
+            id: this.productService.findAll().length+1,
+            name: productBody.productName,
+            description: productBody.productDescription,
+            price: +productBody.productPrice,
+        })
         res.redirect('/')
 
     }
+
+    updateProduct(req:Request , res:Response){
+        const productId = +req.params.id
+        const productIndex: number | undefined = this.productService.findAll().findIndex(product=>product.id === productId)
+      const productBody = req.body
+      if(productIndex !== -1){
+        this.productService.updateProductByIndex(productIndex,productBody)
+        return res.status(200).send({
+            massage:"product has been updated"
+        })
+        } else {
+            return res.status(404).send("Product not found")
+            
+      }
+    }
+    // delete product by id
+    deleteProduct(req:Request , res:Response){
+        const productId = +req.params.id
+        if(isNaN(productId)){
+          return res.status(400).send('Invalid product id');  
+        }
+        const productIndex = this.productService.findAll().findIndex(product=> product.id == productId)
+        if(productIndex === -1){
+          return res.status(404).send('Product not found');
+        }
+        this.productService.deleteProductByIndex(productIndex,1)
+        res.send(this.productService.findAll());
 }
 
+
+}

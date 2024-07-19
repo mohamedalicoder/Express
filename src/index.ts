@@ -35,58 +35,24 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // get all product 
 app.get("/all",(req,res)=>  res.send(productController.getAllProducts(req)))
-
-
-
+ 
 // git product py id 
 app.get("/products/:id",(req,res)=>res.send(productController.getProductById(req,res)))
-
-
 
 // get data by using quary params 
 app.get("/products",(req,res)=>res.send(productController.getAllProducts(req)))
 
-
-
-
-
 // add product 
 
-app.post("/add-product",(req,res)=>{
-  res.send(productController.addNewProduct(req,res))
-})
+app.post("/add-product",(req,res)=>res.send(productController.addNewProduct(req,res)))
 
 // update product
-app.patch("/update/:id",(req,res)=>{
-  const productId = +req.params.id
-  if(isNaN(productId)){
-    return res.status(400).send('Invalid product id');  
-  }
-  const reqs = req.body
-  const productIndex = fakeData.findIndex(product=> product.id == productId)
-  if(productIndex === -1){
-    return res.status(404).send('Product not found');
-  }
-  fakeData[productIndex] = {...fakeData[productIndex],...reqs}
-  res.send(fakeData[productIndex]);
-
-})
+app.patch("/update/:id",(req,res)=> productController.updateProduct(req,res))
 
 
 //dlkkdjlkjdklj
 // delete product
-app.delete("/delete/:id",(req,res)=>{
-  const productId = +req.params.id
-  if(isNaN(productId)){
-    return res.status(400).send('Invalid product id');  
-  }
-  const productIndex = fakeData.findIndex(product=> product.id == productId)
-  if(productIndex === -1){
-    return res.status(404).send('Product not found');
-  }
-  fakeData.splice(productIndex,1)
-  res.send(fakeData);
-  })
+app.delete("/delete/:id",(req,res)=>productController.deleteProduct(req,res))
 
 
 
