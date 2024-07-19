@@ -46,7 +46,7 @@ app.get("/products",(req,res)=>res.send(productController.getAllProducts(req)))
 
 app.post("/add-product",(req,res)=>res.send(productController.addNewProduct(req,res)))
 
-// update product
+// ,v update product
 app.patch("/update/:id",(req,res)=> productController.updateProduct(req,res))
 
 
