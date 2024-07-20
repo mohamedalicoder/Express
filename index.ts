@@ -38,6 +38,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 
+
+app.get("/product",(req,res)=>{
+  res.render("product")
+})
 app.get("/",(req,res)=>{
   res.render("index")
 })
@@ -63,6 +67,9 @@ app.patch("/update/:id",(req,res)=> productController.updateProduct(req,res))
 app.delete("/delete/:id",(req,res)=>productController.deleteProduct(req,res))
 
 
+app.get("*",(req,res)=>{
+  res.render("notFound")
+})
 
 
 // Start the server on port 3000

@@ -19,6 +19,8 @@ var productServices = new ProductServices_1.ProductServices(fakeData);
 var productController = new Product_1.ProductController(productServices);
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
+// static files 
+app.use(express_1.default.static('public'));
 app.get("/", function (req, res) {
     res.render("index");
 });
