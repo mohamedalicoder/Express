@@ -3,6 +3,14 @@ html(lang="en")
     head
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title product
+        title= `Product-${product.id}`
+        link(rel="stylesheet", href="/styles/index.css")
     body 
-    h1 meet our product
+        .container
+            .card
+                .content
+                    a(href=`/product/${product.id}`)
+                    .title= product.name
+                    .price= product.price
+                    .description= product.description
+                    button Buy now

@@ -1,0 +1,18 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Product
+        link(rel="stylesheet", href="styles/index.css")
+    body
+        .container
+            each prod in product
+
+                .card
+                    .content
+                        a(href=`/product/${prod.id}`)
+                         .title= prod.name
+                        .price= prod.price
+                        .description= prod.description
+                    button Buy now

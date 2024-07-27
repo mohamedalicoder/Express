@@ -66,6 +66,12 @@ var ProductController = /** @class */ (function () {
         this.productService.deleteProductByIndex(productIndex, 1);
         res.send(this.productService.findAll());
     };
+    ProductController.prototype.renderProductList = function (req, res) {
+        res.render("product", {
+            "product": this.productService.findAll(),
+            "title": "this is products"
+        });
+    };
     return ProductController;
 }());
 exports.ProductController = ProductController;

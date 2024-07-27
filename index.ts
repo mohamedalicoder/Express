@@ -39,9 +39,10 @@ app.use(express.static('public'));
 
 
 
-app.get("/product",(req,res)=>{
-  res.render("product")
-})
+app.get("/products",(req,res)=>productController.renderProductList(req,res))
+
+
+app.get("/product/:id",(req,res)=>productController.renderProduct(req,res))
 app.get("/",(req,res)=>{
   res.render("index")
 })
@@ -49,7 +50,7 @@ app.get("/",(req,res)=>{
 app.get("/all",(req,res)=>  res.send(productController.getAllProducts(req)))
  
 // git product py id 
-app.get("/products/:id",(req,res)=>res.send(productController.getProductById(req,res)))
+app.get("api/products/:id",(req,res)=>res.send(productController.getProductById(req,res)))
 
 // get data by using quary params 
 app.get("/products",(req,res)=>res.send(productController.getAllProducts(req)))
