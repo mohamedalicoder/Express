@@ -21,14 +21,15 @@ app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 // static files 
 app.use(express_1.default.static('public'));
-app.get("/product", function (req, res) { return productController.renderProductList(req, res); });
+app.get("/products", function (req, res) { return productController.renderProductList(req, res); });
+app.get("/product/:id", function (req, res) { return productController.renderProduct(req, res); });
 app.get("/", function (req, res) {
     res.render("index");
 });
 // get all product 
 app.get("/all", function (req, res) { return res.send(productController.getAllProducts(req)); });
 // git product py id 
-app.get("/products/:id", function (req, res) { return res.send(productController.getProductById(req, res)); });
+app.get("api/products/:id", function (req, res) { return res.send(productController.getProductById(req, res)); });
 // get data by using quary params 
 app.get("/products", function (req, res) { return res.send(productController.getAllProducts(req)); });
 // add product 
