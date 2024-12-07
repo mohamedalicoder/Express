@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { IProduct } from 'src/interface';
+import { IProduct } from 'interface';
 
 
 export const generateProducts = () : IProduct[] =>{
